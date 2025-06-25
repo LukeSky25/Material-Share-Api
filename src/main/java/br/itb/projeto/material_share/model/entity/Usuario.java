@@ -18,7 +18,7 @@ public class Usuario {
 	private String nome;
 	private String email;
 	private String senha;
-	private String nivelAcesso; // ADMIN ou USER
+	private String nivelAcesso; // ADMIN, USER ou BENEFICIARIO
 	private byte[] foto;
 	private LocalDateTime dataCadastro;
 	private String statusUsuario; // ATIVO ou INATIVO ou TROCAR_SENHA
