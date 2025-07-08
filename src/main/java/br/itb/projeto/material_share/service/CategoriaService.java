@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import br.itb.projeto.material_share.model.entity.Categoria;
 import br.itb.projeto.material_share.model.repository.CategoriaRepository;
+import jakarta.transaction.Transactional;
 
 @Service
 public class CategoriaService {
@@ -33,6 +34,19 @@ public class CategoriaService {
 		List<Categoria> categorias = categoriaRepository.findAll();
 	
 		return categorias;
+	}
+	
+	@Transactional
+	public Categoria save(Categoria categoria) {
+		Optional<Categoria> _categoria = categoriaRepository.findByNome(categoria.getNome());
+		
+		if(_categoria.isEmpty()) {
+			categoria.setStatusCategoria("ATIVO");
+			
+			return categoriaRepository.save(categoria);
+		}
+		
+		return null;
 	}
 }
 

@@ -55,7 +55,6 @@ public class PessoaService {
 		pessoa.setNome(usuario.getNome());
 		pessoa.setUsuario(usuario);
 		pessoa.setStatusDoador("ATIVO");
-		pessoa.setUsuario(usuario);
 		
 		return pessoaRepository.save(pessoa);
 		
