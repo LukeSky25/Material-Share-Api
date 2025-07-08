@@ -38,13 +38,13 @@ public class DoacaoService {
 		return doacoes;
 	}
 	
-	public List<Doacao> findbyStatusDoacao(String statusDoacao) {
+	public List<Doacao> findByStatusDoacao(String statusDoacao) {
 		List<Doacao> doacoes = doacaoRepository.findByStatusDoacao(statusDoacao);
 		return doacoes;
 	}
 	
 	public List<Doacao> findbyNome(String nome) {
-		return doacaoRepository.findByNome(nome);
+		return doacaoRepository.findByNomeContainingIgnoreCase(nome);
 	}
 	
 	public List<Doacao> findByCategoria(Long categoriaId) {
@@ -74,7 +74,10 @@ public class DoacaoService {
 		} else {
 			doacao.setFoto(null);
 		}
+		
+		doacao.setDataCadastro(LocalDateTime.now());
 		doacao.setStatusDoacao("ATIVO");
+		
 		
 		return doacaoRepository.save(doacao);
 	}
@@ -119,21 +122,35 @@ public class DoacaoService {
 		if (_doacao.isPresent()) {
 			Doacao doacaoAtualizada = _doacao.get();
 			
-			doacaoAtualizada.setNome(doacao.getNome());
-			doacaoAtualizada.setDescricao(doacao.getDescricao());
-			doacaoAtualizada.setCep(doacao.getCep());
-			doacaoAtualizada.setCategoria(doacao.getCategoria());
-			
-			if (file != null && file.getSize() > 0) {
-				try {
-					doacaoAtualizada.setFoto(file.getBytes());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			} 
+			if (doacao.getNome() != null)
+				doacaoAtualizada.setNome(doacao.getNome());
 
-			return doacaoRepository.save(doacaoAtualizada);
-		}
-		return null;
+	        if (doacao.getDescricao() != null)
+	        	doacaoAtualizada.setDescricao(doacao.getDescricao());
+
+	        if (doacao.getCep() != null)
+	        	doacaoAtualizada.setCep(doacao.getCep());
+
+	        if (doacao.getCategoria() != null)
+	        	doacaoAtualizada.setCategoria(doacao.getCategoria());
+
+	        if (doacao.getPessoa() != null)
+	        	doacaoAtualizada.setPessoa(doacao.getPessoa());
+
+	        if (doacao.getStatusDoacao() != null)
+	        	doacaoAtualizada.setStatusDoacao(doacao.getStatusDoacao());
+
+	        if (file != null && file.getSize() > 0) {
+	            try {
+	            	doacaoAtualizada.setFoto(file.getBytes());
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            }
+	        }
+
+	        return doacaoRepository.save(doacaoAtualizada);
+	    }
+
+	    return null;
 	}
 }

@@ -12,7 +12,7 @@ public interface DoacaoRepository extends JpaRepository<Doacao, Long> {
 	
 	List<Doacao> findByStatusDoacao(String statusDoacao);
 	
-	List<Doacao> findByNome(String nome);
+	List<Doacao> findByNomeContainingIgnoreCase(String nome);
 	
 	List<Doacao> findByCategoriaId(Long categoriaId);
 	

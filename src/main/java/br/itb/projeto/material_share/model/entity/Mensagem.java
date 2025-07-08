@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -16,12 +18,19 @@ public class Mensagem {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private LocalDateTime dataMensagem;
-	private String emissor;
+	
+	@ManyToOne
+	@JoinColumn(name = "benficiario_id")
+	private Pessoa pessoa;
+	
+	@ManyToOne
+	@JoinColumn(name = "doacao_id")
+	private Doacao doacao;
+	
 	private String email;
 	private String telefone;
 	private String texto;
 	private String statusMensagem; // ATIVO ou INATIVO
-	
 	public long getId() {
 		return id;
 	}
@@ -34,11 +43,17 @@ public class Mensagem {
 	public void setDataMensagem(LocalDateTime dataMensagem) {
 		this.dataMensagem = dataMensagem;
 	}
-	public String getEmissor() {
-		return emissor;
+	public Pessoa getPessoa() {
+		return pessoa;
 	}
-	public void setEmissor(String emissor) {
-		this.emissor = emissor;
+	public void setPessoa(Pessoa pessoa) {
+		this.pessoa = pessoa;
+	}
+	public Doacao getDoacao() {
+		return doacao;
+	}
+	public void setDoacao(Doacao doacao) {
+		this.doacao = doacao;
 	}
 	public String getEmail() {
 		return email;
@@ -64,6 +79,11 @@ public class Mensagem {
 	public void setStatusMensagem(String statusMensagem) {
 		this.statusMensagem = statusMensagem;
 	}
+	
+	
+	
+	
+	
 
 	
 
