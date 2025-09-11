@@ -20,7 +20,7 @@ public class Mensagem {
 	private LocalDateTime dataMensagem;
 	
 	@ManyToOne
-	@JoinColumn(name = "benficiario_id")
+	@JoinColumn(name = "beneficiario_id")
 	private Pessoa pessoa;
 	
 	@ManyToOne
@@ -31,6 +31,9 @@ public class Mensagem {
 	private String telefone;
 	private String texto;
 	private String statusMensagem; // ATIVO ou INATIVO
+	
+	
+	
 	public long getId() {
 		return id;
 	}
