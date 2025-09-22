@@ -15,59 +15,52 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import br.itb.projeto.material_share.model.entity.Produto;
+import br.itb.projeto.material_share.model.entity.Pessoa;
 import br.itb.projeto.material_share.model.entity.Usuario;
 import br.itb.projeto.material_share.rest.response.MessageResponse;
+import br.itb.projeto.material_share.service.PessoaService;
 import br.itb.projeto.material_share.service.UsuarioService;
 
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioController {
 
-	private UsuarioService usuarioService;
-	// Source -> Generate Constructor using Fields...
-	public UsuarioController(UsuarioService usuarioService) {
-		super();
+	private final UsuarioService usuarioService;
+	private final PessoaService pessoaService;
+	
+	// CONSTRUTOR CORRIGIDO
+	public UsuarioController(UsuarioService usuarioService, PessoaService pessoaService) {
 		this.usuarioService = usuarioService;
+		this.pessoaService = pessoaService;
 	}
 	
 	@GetMapping("/findById/{id}")
 	public ResponseEntity<Usuario> findById(@PathVariable long id) {
 		Usuario usuario = usuarioService.findById(id);
-		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
+		return new ResponseEntity<>(usuario, HttpStatus.OK);
 	}
 	
 	@GetMapping("/findAll")
 	public ResponseEntity<List<Usuario>> findAll(){
-		
 		List<Usuario> usuarios = usuarioService.findAll();
-		
-		return new ResponseEntity<List<Usuario>>(usuarios, HttpStatus.OK);
-		
+		return new ResponseEntity<>(usuarios, HttpStatus.OK);
 	}
 	
 	@GetMapping("/findAllAtivos")
 	public ResponseEntity<List<Usuario>> findAllAtivos(){
-		
 		List<Usuario> usuarios = usuarioService.findAllByStatus("ATIVO");
-		
-		return new ResponseEntity<List<Usuario>>(usuarios, HttpStatus.OK);
-		
+		return new ResponseEntity<>(usuarios, HttpStatus.OK);
 	}
 	
 	@PostMapping("/save")
 	public ResponseEntity<?> save(@RequestBody Usuario usuario) {
-		
 		Usuario _usuario = usuarioService.save(usuario);
-		
 		return new ResponseEntity<>(_usuario, HttpStatus.CREATED);
 	}
 	
 	@PostMapping("/create")
 	public ResponseEntity<?> create(@RequestBody Usuario usuario) {
-		
 		Usuario _usuario = usuarioService.create(usuario);
-		
 		return ResponseEntity.ok()
 				.body(new MessageResponse("Conta de Usuário criada com sucesso!"));
 	}
@@ -76,49 +69,38 @@ public class UsuarioController {
 	public ResponseEntity<?> editar(@PathVariable long id,
 			@RequestParam(required = false) MultipartFile file,
 			@ModelAttribute Usuario usuario) {
-
 		Usuario _usuario = usuarioService.editar(file, id, usuario);
-
 		return ResponseEntity.ok()
 				.body(new MessageResponse("Usuário alterado com sucesso!"));
 	}
 	
 	@PutMapping("/alterarSenha/{id}")
 	public ResponseEntity<?> trocarSenha(@PathVariable long id, @RequestBody Usuario usuario) {
-		
 		Usuario _usuario = usuarioService.alterarSenha(id, usuario);
-		
 		return ResponseEntity.ok()
 				.body(new MessageResponse("Senha alterada com sucesso!"));
 	}
 	
 	@PutMapping("/inativar/{id}")
 	public ResponseEntity<?> inativar(@PathVariable long id) {
-		
 		Usuario _usuario = usuarioService.inativar(id);
-		
 		return ResponseEntity.ok()
 				.body(new MessageResponse("Conta de Usuário inativada com sucesso!"));
 	}	
 	
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody Usuario usuario) {
-
 		Usuario _usuario = usuarioService.login(usuario.getEmail(), usuario.getSenha());
-
 		if (_usuario != null) {
-			return ResponseEntity.ok().body(_usuario);
-		} 
-
+			Pessoa pessoaLogada = pessoaService.findByUsuarioId(_usuario.getId());
+			if (pessoaLogada != null) {
+				return ResponseEntity.ok().body(pessoaLogada);
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND)
+						.body(new MessageResponse("Dados de perfil não encontrados para este usuário."));
+			}
+		}
 		return ResponseEntity.badRequest()
 						.body(new MessageResponse("Dados Incorretos!"));
 	}
 }
-
-
-
-
-
-
-
-

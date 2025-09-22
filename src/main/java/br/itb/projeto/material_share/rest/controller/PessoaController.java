@@ -59,9 +59,9 @@ public class PessoaController {
 	}
 	
 	@PutMapping("/editar/{id}")
-	public ResponseEntity<?> editar(@PathVariable long id, @ModelAttribute Pessoa pessoa) {
-		Pessoa _pessoa = pessoaService.editar(id, pessoa);
-		
-		return ResponseEntity.ok().body(new MessageResponse("Dados atualizados com sucesso"));
+	public ResponseEntity<?> editar(@PathVariable long id, @RequestBody Pessoa pessoa) { // <-- CORRIGIDO
+	    Pessoa _pessoa = pessoaService.editar(id, pessoa);
+	    
+	    return ResponseEntity.ok().body(new MessageResponse("Dados atualizados com sucesso!")); 
 	}
 }

@@ -46,6 +46,11 @@ public class PessoaService {
 		return pessoas;
 	}
 	
+	public Pessoa findByUsuarioId(long usuarioId) {
+		Optional<Pessoa> pessoa = pessoaRepository.findByUsuarioId(usuarioId);
+		return pessoa.orElse(null);
+	}
+	
 	@Transactional
 	public Pessoa save(Pessoa pessoa) {
 		

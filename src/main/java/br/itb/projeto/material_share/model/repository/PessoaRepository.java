@@ -1,6 +1,7 @@
 package br.itb.projeto.material_share.model.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -14,5 +15,7 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
 	Pessoa findByUsuarioEmail(String email);
 	
 	List<Pessoa> findByTipo(String string);
+	
+	Optional<Pessoa> findByUsuarioId(long usuarioId);
 	
 }
