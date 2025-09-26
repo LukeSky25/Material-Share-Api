@@ -18,11 +18,13 @@ public class Pessoa {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String nome;
-	private String tipo; // DOADOR ou BENEFICIARIO
 	private LocalDate dataNascimento;
+	private String celular;
 	private String cpf_cnpj;
 	private String cep;
+	private String complemento;
 	private String numeroResidencia;
+	private String tipo; // DOADOR ou BENEFICIARIO
 	
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
@@ -47,12 +49,12 @@ public class Pessoa {
 		this.nome = nome;
 	}
 
-	public String getTipo() {
-		return tipo;
+	public String getCelular() {
+		return celular;
 	}
 
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
+	public void setCelular(String celular) {
+		this.celular = celular;
 	}
 
 	public LocalDate getDataNascimento() {
@@ -78,6 +80,14 @@ public class Pessoa {
 	public void setCep(String cep) {
 		this.cep = cep;
 	}
+	
+	public String getComplemento() {
+		return complemento;
+	}
+
+	public void setComplemento(String complemento) {
+		this.complemento = complemento;
+	}
 
 	public String getNumeroResidencia() {
 		return numeroResidencia;
@@ -85,6 +95,14 @@ public class Pessoa {
 
 	public void setNumeroResidencia(String numeroResidencia) {
 		this.numeroResidencia = numeroResidencia;
+	}
+	
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 
 	public Usuario getUsuario() {

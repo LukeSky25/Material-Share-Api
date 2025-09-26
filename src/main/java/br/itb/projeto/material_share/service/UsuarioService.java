@@ -130,6 +130,25 @@ public class UsuarioService {
 		return null;
 	}
 	
+	
+	@Transactional
+    public Usuario update(Usuario usuarioComDadosNovos) {
+     
+        Optional<Usuario> usuarioExistente = usuarioRepository.findByEmailAndIdNot(
+            usuarioComDadosNovos.getEmail(),
+            usuarioComDadosNovos.getId()
+        );
+
+        
+        if (usuarioExistente.isPresent()) {
+   
+            throw new RuntimeException("Este e-mail já está cadastrado em outra conta.");
+        }
+
+
+        return usuarioRepository.save(usuarioComDadosNovos);
+    }
+	
 
 	@Transactional
 	public Usuario editar(MultipartFile file, long id, Usuario usuario) {
