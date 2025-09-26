@@ -74,8 +74,9 @@ public class PessoaService {
 			Pessoa pessoaAtualizada = _pessoa.get();
 		
 			pessoaAtualizada.setNome(pessoa.getNome());
-			
-			 
+			pessoaAtualizada.setDataNascimento(pessoa.getDataNascimento());
+			pessoaAtualizada.setCpf_cnpj(pessoa.getCpf_cnpj());
+			pessoaAtualizada.setNome(pessoa.getNome());
 
 			return pessoaRepository.save(pessoaAtualizada);
 		}
