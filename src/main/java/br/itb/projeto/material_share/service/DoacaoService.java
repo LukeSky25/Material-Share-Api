@@ -131,6 +131,15 @@ public class DoacaoService {
 	        if (doacao.getCep() != null)
 	        	doacaoAtualizada.setCep(doacao.getCep());
 
+	        if (doacao.getComplemento() != null)
+	        	doacaoAtualizada.setComplemento(doacao.getComplemento());
+	        
+	        if (doacao.getNumeroResidencia() != null)
+	        	doacaoAtualizada.setNumeroResidencia(doacao.getNumeroResidencia());
+	        
+	        if (doacao.getQuantidade() != null)
+	        	doacaoAtualizada.setQuantidade(doacao.getQuantidade());
+	        
 	        if (doacao.getCategoria() != null)
 	        	doacaoAtualizada.setCategoria(doacao.getCategoria());
 

@@ -20,6 +20,9 @@ public class Doacao {
 	private String nome;
 	private String descricao;
 	private String cep;
+	private String complemento;
+	private String numeroResidencia;
+	private String quantidade;
 	private byte[] foto;
 	
 	@ManyToOne
@@ -33,7 +36,6 @@ public class Doacao {
 	
 	private LocalDateTime dataCadastro;
 	private String statusDoacao; // ATIVO ou INATIVO ou DOADO
-	
 	
 	
 	public long getId() {
@@ -59,6 +61,24 @@ public class Doacao {
 	}
 	public void setCep(String cep) {
 		this.cep = cep;
+	}
+	public String getComplemento() {
+		return complemento;
+	}
+	public void setComplemento(String complemento) {
+		this.complemento = complemento;
+	}
+	public String getNumeroResidencia() {
+		return numeroResidencia;
+	}
+	public void setNumeroResidencia(String numeroResidencia) {
+		this.numeroResidencia = numeroResidencia;
+	}
+	public String getQuantidade() {
+		return quantidade;
+	}
+	public void setQuantidade(String quantidade) {
+		this.quantidade = quantidade;
 	}
 	public byte[] getFoto() {
 		return foto;
@@ -90,7 +110,5 @@ public class Doacao {
 	public void setStatusDoacao(String statusDoacao) {
 		this.statusDoacao = statusDoacao;
 	}
-	
-	
 	
 }
