@@ -90,6 +90,7 @@ public class DoacaoService {
 			Doacao doacaoAtualizada = _doacao.get();
 			
 			if (!novoStatus.equalsIgnoreCase("INATIVO") && 
+				!novoStatus.equalsIgnoreCase("SOLICITADO") &&
 				!novoStatus.equalsIgnoreCase("DOADO")) {
 			    throw new IllegalArgumentException("Status inválido. Use 'INATIVO' ou 'DOADO'.");
 			}
