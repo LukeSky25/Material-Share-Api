@@ -26,6 +26,12 @@ public class MensagemController {
 		super();
 		this.mensagemService = mensagemService;
 	}
+	
+	@GetMapping("/doador/{doadorId}")
+	public ResponseEntity<List<Mensagem>> getMensagensParaDoador(@PathVariable Long doadorId) {
+	    List<Mensagem> mensagens = mensagemService.findMensagensByDoadorId(doadorId);
+	    return new ResponseEntity<>(mensagens, HttpStatus.OK);
+	}
 		
 	@GetMapping("/findById/{id}")
 	public ResponseEntity<Mensagem> findById(@PathVariable long id){

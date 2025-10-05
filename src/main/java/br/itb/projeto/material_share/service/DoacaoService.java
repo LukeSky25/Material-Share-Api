@@ -2,6 +2,7 @@ package br.itb.projeto.material_share.service;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.itb.projeto.material_share.model.entity.Doacao;
+import br.itb.projeto.material_share.model.entity.Mensagem;
+import br.itb.projeto.material_share.model.entity.Pessoa;
 import br.itb.projeto.material_share.model.entity.Produto;
 import br.itb.projeto.material_share.model.repository.DoacaoRepository;
 import jakarta.transaction.Transactional;
@@ -17,10 +20,14 @@ import jakarta.transaction.Transactional;
 public class DoacaoService {
 
 	private DoacaoRepository doacaoRepository;
+	private final MensagemService mensagemService;
+    private final PessoaService pessoaService;
 	
-	public DoacaoService(DoacaoRepository doacaoRepository) {
+	public DoacaoService(DoacaoRepository doacaoRepository, MensagemService mensagemService, PessoaService pessoaService) {
 		super();
 		this.doacaoRepository = doacaoRepository;
+		this.mensagemService = mensagemService;
+        this.pessoaService = pessoaService;
 	}
 	
 	public Doacao findById(long id) {
@@ -51,6 +58,22 @@ public class DoacaoService {
 		return doacaoRepository.findByCategoriaId(categoriaId);
 	}
 	
+	public List<Doacao> findByPessoa(Long pessoaId) {
+        
+        return doacaoRepository.findByPessoaIdAndStatusDoacaoIn(pessoaId, Arrays.asList("ATIVO", "SOLICITADO"));
+    }
+	
+	public List<Doacao> findSolicitadasPorBeneficiario(Long beneficiarioId) {
+        return doacaoRepository.findDoacoesSolicitadasPorBeneficiario(beneficiarioId);
+    }
+	
+	public List<Doacao> filtrarDoacoes(String nome, List<Long> categorias) {
+        
+        List<Long> categoriasFiltradas = (categorias != null && !categorias.isEmpty()) ? categorias : null;
+        String nomeFiltrado = (nome != null && !nome.trim().isEmpty()) ? nome : null;
+
+        return doacaoRepository.filtrarDoacoes(nomeFiltrado, categoriasFiltradas);
+    }
 	
 	
 	@Transactional
@@ -101,6 +124,46 @@ public class DoacaoService {
 
 		return null;
 	}
+	
+	@Transactional
+    public Doacao solicitarDoacao(long doacaoId, long beneficiarioId) {
+
+        Doacao doacao = doacaoRepository.findById(doacaoId)
+            .orElseThrow(() -> new IllegalStateException("Doação não encontrada."));
+
+        if (!"ATIVO".equalsIgnoreCase(doacao.getStatusDoacao())) {
+            throw new IllegalStateException("Esta doação não está mais disponível para solicitação.");
+        }
+
+    
+        Pessoa beneficiario = pessoaService.findById(beneficiarioId);
+        if (beneficiario == null) {
+            throw new IllegalStateException("Beneficiário não encontrado.");
+        }
+
+      
+        doacao.setStatusDoacao("SOLICITADO");
+        Doacao doacaoAtualizada = doacaoRepository.save(doacao);
+
+        
+        Mensagem notificacao = new Mensagem();
+        notificacao.setDoacao(doacaoAtualizada);
+        notificacao.setPessoa(beneficiario);
+        
+      
+        String textoMensagem = String.format(
+            "Olá! O beneficiário '%s' demonstrou interesse no seu item '%s'. " +
+            "Você pode entrar em contato através do WhatsApp/celular: %s",
+            beneficiario.getNome(),
+            doacao.getNome(),
+            beneficiario.getCelular()
+        );
+        notificacao.setTexto(textoMensagem);
+        
+        mensagemService.save(notificacao);
+
+        return doacaoAtualizada;
+    }
 	
 	@Transactional
 	public Doacao reativar(long id) {

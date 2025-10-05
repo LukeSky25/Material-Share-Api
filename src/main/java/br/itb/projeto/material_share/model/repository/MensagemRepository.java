@@ -3,6 +3,8 @@ package br.itb.projeto.material_share.model.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import br.itb.projeto.material_share.model.entity.Mensagem;
@@ -16,5 +18,8 @@ public interface MensagemRepository extends JpaRepository<Mensagem, Long> {
 	List<Mensagem> findByEmail(String email);
 
 	List<Mensagem> findByStatusMensagem(String statusMensagem);
+	
+	@Query("SELECT m FROM Mensagem m JOIN m.doacao d WHERE d.pessoa.id = :doadorId ORDER BY m.dataMensagem DESC")
+    List<Mensagem> findMensagensByDoadorId(@Param("doadorId") Long doadorId);
 
 }

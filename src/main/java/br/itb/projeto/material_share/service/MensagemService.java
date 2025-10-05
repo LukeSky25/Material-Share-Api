@@ -21,6 +21,10 @@ public class MensagemService {
 		this.mensagemRepository = mensagemRepository;
 	}
 	
+	public List<Mensagem> findMensagensByDoadorId(Long doadorId) {
+	    return mensagemRepository.findMensagensByDoadorId(doadorId);
+	}
+	
 	/* LISTA TODOS OS REGISTROS DA TABELA */
 	public List<Mensagem> findAll(){
 		List<Mensagem> mensagens = mensagemRepository.findAll();
