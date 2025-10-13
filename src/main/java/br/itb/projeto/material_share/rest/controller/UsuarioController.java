@@ -103,4 +103,17 @@ public class UsuarioController {
 		return ResponseEntity.badRequest()
 						.body(new MessageResponse("Dados Incorretos!"));
 	}
+	
+	@PostMapping("/admin/login")
+	public ResponseEntity<?> loginAdmin(@RequestBody Usuario usuario) {
+	    Usuario _usuario = usuarioService.loginAdmin(usuario.getEmail(), usuario.getSenha());
+	    
+	    if (_usuario != null) {
+	        return ResponseEntity.ok().body(_usuario);
+	    }
+	    
+	    return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+	                    .body(new MessageResponse("Acesso negado. Verifique suas credenciais de administrador."));
+	}
+	
 }

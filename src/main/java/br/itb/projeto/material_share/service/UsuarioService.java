@@ -62,6 +62,28 @@ public class UsuarioService {
 		}
 		return null;
 	}
+	
+	@Transactional
+	public Usuario loginAdmin(String email, String senha) {
+	    Usuario usuario = usuarioRepository.findByEmail(email);
+
+
+	    if (usuario != null && !usuario.getStatusUsuario().equals("INATIVO")) {
+	        
+
+	        byte[] decodedPass = Base64.getDecoder().decode(usuario.getSenha());
+	        if (new String(decodedPass).equals(senha)) {
+	            
+	            
+	            if ("ADMIN".equals(usuario.getNivelAcesso())) {
+	                return usuario;
+	            }
+	        }
+	    }
+	    
+
+	    return null;
+	}
 
 	public Usuario findByEmail(String email) {
 		Usuario usuario = usuarioRepository.findByEmail(email);
