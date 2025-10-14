@@ -36,6 +36,18 @@ public class PessoaController {
 		return new ResponseEntity<Pessoa>(pessoa, HttpStatus.OK);
 	}
 	
+	@GetMapping("/findByUsuarioId/{usuarioId}")
+    public ResponseEntity<Pessoa> findByUsuarioId(@PathVariable long usuarioId) {
+        Pessoa pessoa = pessoaService.findByUsuarioId(usuarioId);
+
+        
+        if (pessoa == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<Pessoa>(pessoa, HttpStatus.OK);
+    }
+	
 	@GetMapping("/findAll")
 	public ResponseEntity<List<Pessoa>> findAll() {
 		List<Pessoa> pessoas = pessoaService.findAll();
