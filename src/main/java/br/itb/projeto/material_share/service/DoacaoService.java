@@ -1,6 +1,7 @@
 package br.itb.projeto.material_share.service;
 
 import java.io.IOException;
+
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -12,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 import br.itb.projeto.material_share.model.entity.Doacao;
 import br.itb.projeto.material_share.model.entity.Mensagem;
 import br.itb.projeto.material_share.model.entity.Pessoa;
-import br.itb.projeto.material_share.model.entity.Produto;
 import br.itb.projeto.material_share.model.repository.DoacaoRepository;
 import jakarta.transaction.Transactional;
 

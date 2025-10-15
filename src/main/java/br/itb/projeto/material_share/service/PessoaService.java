@@ -79,17 +79,22 @@ public class PessoaService {
 
 
             if (dadosRecebidos.getUsuario() != null) {
-                
-
-                usuarioParaAtualizar.setNome(dadosRecebidos.getNome()); 
-                
+                usuarioParaAtualizar.setNome(dadosRecebidos.getNome());
 
                 if (dadosRecebidos.getUsuario().getEmail() != null) {
-                    String novoEmail = dadosRecebidos.getUsuario().getEmail();
-                    usuarioParaAtualizar.setEmail(novoEmail);
+                    usuarioParaAtualizar.setEmail(dadosRecebidos.getUsuario().getEmail());
+                }
+
+                
+                if (dadosRecebidos.getUsuario().getNivelAcesso() != null) {
+                    usuarioParaAtualizar.setNivelAcesso(dadosRecebidos.getUsuario().getNivelAcesso());
+                }
+
+                if (dadosRecebidos.getUsuario().getStatusUsuario() != null) {
+                    usuarioParaAtualizar.setStatusUsuario(dadosRecebidos.getUsuario().getStatusUsuario());
                 }
                 
-
+               
                 usuarioService.update(usuarioParaAtualizar);
             }
 
