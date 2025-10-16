@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -58,6 +59,34 @@ public class CategoriaController {
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse("Categoria criada com sucesso"));
 	}
+	
+	@PutMapping("/update/{id}")
+    public ResponseEntity<?> update(@PathVariable long id, @RequestBody Categoria categoria) {
+        
+
+        Categoria categoriaAtualizada = categoriaService.update(id, categoria);
+        
+
+        if (categoriaAtualizada != null) {
+
+            return ResponseEntity.status(HttpStatus.OK).body(new MessageResponse("Categoria atualizada com sucesso!"));
+        }
+        
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Erro: Categoria não encontrada com o ID fornecido."));
+    }
+	
+	@PutMapping("/inativar/{id}")
+    public ResponseEntity<?> inativar(@PathVariable long id) {
+        Categoria categoriaInativada = categoriaService.inativar(id);
+        
+        if (categoriaInativada != null) {
+            return ResponseEntity.ok(new MessageResponse("Categoria inativada com sucesso!"));
+        }
+        
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body(new MessageResponse("Erro: Categoria não encontrada."));
+    }
 
 }
 
