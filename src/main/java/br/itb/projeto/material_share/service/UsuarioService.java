@@ -127,7 +127,6 @@ public class UsuarioService {
 
 			usuario.setSenha(senha);
 			usuario.setDataCadastro(LocalDateTime.now());
-			usuario.setNivelAcesso("USER");
 			usuario.setStatusUsuario("ATIVO");
 
 			return usuarioRepository.save(usuario);
